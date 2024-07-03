@@ -24,7 +24,7 @@ jobs:
             # Uygulamanın deploy edileceği dizine git
             cd ${{ secrets.VPS_DEPLOY_PATH }}
             
-            # Gerekli dosyaları kopyala
+            # Gerekli dosyaları kopyalar
             git pull origin main
             
             # Gerekli bağımlılıkları yükle
