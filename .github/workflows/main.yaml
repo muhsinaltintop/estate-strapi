@@ -84,7 +84,7 @@ jobs:
           # Stop PM2 processes
           pm2 stop all
           # Navigate to your application directory
-          cd /path/to/your/application || exit
+          cd /home/ubuntu/estate-strapi || exit
           # Pull the latest code from main branch
           git pull origin main
           # Install dependencies
