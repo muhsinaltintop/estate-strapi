@@ -21,8 +21,8 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh/
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/private.key
+          chmod 600 ~/.ssh/private.key
           echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
         shell: bash
         env:
@@ -61,13 +61,12 @@ jobs:
         run: tar -czf build.tar.gz ./build
 
       - name: Test SSH connection
-        run: ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@77.37.124.127 "echo 'SSH connection established'"
+        run: ssh -i ${{ secrets.SSH_PRIVATE_KEY }} -o StrictHostKeyChecking=no root@77.37.124.127 "echo 'SSH connection established'"
         shell: bash
 
       - name: Copy build files to server
         run: |
-          scp -i ${{ secrets.SSH_PRIVATE_KEY }} -o StrictHostKeyChecking=no build.tar.gz root@77.37.124.127/home/ubuntu/estate-strapi
-        shell: bash
+          scp -i ${{ secrets.SSH_PRIVATE_KEY }} -o StrictHostKeyChecking=no build.tar.gz root@77.37.124.127:/home/ubuntu/estate-strapi
 
       - name: Deploy build on server
         run: |
