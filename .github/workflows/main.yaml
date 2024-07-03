@@ -61,7 +61,7 @@ jobs:
         run: tar -czf build.tar.gz ./build
 
       - name: Test SSH connection
-        run: ssh -i ~/.ssh/private.key -o StrictHostKeyChecking=no root@77.37.124.127 "echo 'SSH connection established'"
+        run: ssh -i ${{ secrets.SSH_PRIVATE_KEY }} -o StrictHostKeyChecking=no root@77.37.124.127 "echo 'SSH connection established'"
         shell: bash
 
       - name: Copy build files to server
