@@ -1,4 +1,4 @@
-name: Estate Deployment
+name: Estate Deployment v.01
 
 on:
   push:
