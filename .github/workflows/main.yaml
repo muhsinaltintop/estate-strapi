@@ -58,7 +58,7 @@ jobs:
           DATABASE_SSL: ${{ secrets.DATABASE_SSL }}
 
       - name: Build Strapi app
-        run: npm build
+        run: npm run build
 
       - name: Start Strapi app
         run: pm2 start ecosystem.config.js
