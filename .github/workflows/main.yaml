@@ -55,7 +55,7 @@ jobs:
           DATABASE_SSL: ${{ secrets.DATABASE_SSL }}
 
       - name: Build Strapi app for production
-        run: npm run build -- --production
+        run: npm run build
 
       - name: Test SSH connection
         run: ssh -i ~/.ssh/private.key -o StrictHostKeyChecking=no root@77.37.124.127 "echo 'SSH connection established'"
