@@ -60,9 +60,6 @@ jobs:
       - name: Build Strapi app
         run: npm run build
 
-      - name: Start Strapi app
-        run: pm2 start server.js
-
       - name: Check PM2 status before
         run: pm2 status
 
@@ -71,4 +68,16 @@ jobs:
 
       - name: Test SSH connection
         run: ssh -i ~/.ssh/private.key -o StrictHostKeyChecking=no root@77.37.124.127 "echo 'SSH connection established'"
+        shell: bash
+
+      - name: Deploy to Server
+        run: |
+          ssh -i ~/.ssh/private.key -o StrictHostKeyChecking=no root@77.37.124.127 << 'EOF'
+          pm2 stop all
+          cd /path/to/your/application
+          git pull origin main
+          npm install
+          npm run build
+          pm2 start server.js
+          EOF
         shell: bash
