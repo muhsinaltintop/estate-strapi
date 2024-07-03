@@ -22,7 +22,7 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
           SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
-          SSH_KEY_PATH: ${{ github.workspace }}/id_rsa
+          SSH_KEY_PATH: ${{ github.workspace }}/private.key
       - name: Checkout 🛎
         uses: actions/checkout@v4
         with:
@@ -78,4 +78,4 @@ jobs:
           ssh -i $SSH_KEY_PATH -o StrictHostKeyChecking=no root@77.37.124.127 "echo 'SSH connection established'"
         shell: bash
         env:
-          SSH_KEY_PATH: ~/.ssh/id_rsa
+          SSH_KEY_PATH: ~/.ssh/private.key
