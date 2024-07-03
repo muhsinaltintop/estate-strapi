@@ -73,11 +73,25 @@ jobs:
       - name: Deploy to Server
         run: |
           ssh -i ~/.ssh/private.key -o StrictHostKeyChecking=no root@77.37.124.127 << 'EOF'
+          # Check and install node and pm2 if not installed
+          if ! command -v node &> /dev/null; then
+            curl -sL https://deb.nodesource.com/setup_20.x | bash -
+            apt-get install -y nodejs
+          fi
+          if ! command -v pm2 &> /dev/null; then
+            npm install pm2 -g
+          fi
+          # Stop PM2 processes
           pm2 stop all
-          cd /path/to/your/application
+          # Navigate to your application directory
+          cd /path/to/your/application || exit
+          # Pull the latest code from main branch
           git pull origin main
+          # Install dependencies
           npm install
+          # Build the application
           npm run build
+          # Start the application with PM2
           pm2 start server.js
           EOF
         shell: bash
