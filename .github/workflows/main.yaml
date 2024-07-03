@@ -78,4 +78,4 @@ jobs:
           ssh -i $SSH_KEY_PATH -o StrictHostKeyChecking=no root@77.37.124.127 "echo 'SSH connection established'"
         shell: bash
         env:
-          SSH_KEY_PATH: ~/.ssh/private.key
+          SSH_KEY_PATH: ~/.ssh/id_rsa
