@@ -54,44 +54,14 @@ jobs:
           DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
           DATABASE_SSL: ${{ secrets.DATABASE_SSL }}
 
-      - name: Install pm2 globally
-        run: npm install pm2 -g
-
-      - name: Build Strapi app
-        run: npm run build
-
-      - name: Check PM2 status before
-        run: pm2 status
-
-      - name: Sync PM2
-        run: pm2 save
+      - name: Build Strapi app for production
+        run: npm run build -- --production
 
       - name: Test SSH connection
         run: ssh -i ~/.ssh/private.key -o StrictHostKeyChecking=no root@77.37.124.127 "echo 'SSH connection established'"
         shell: bash
 
-      - name: Deploy to Server
+      - name: Deploy build to Server
         run: |
-          ssh -i ~/.ssh/private.key -o StrictHostKeyChecking=no root@77.37.124.127 << 'EOF'
-          # Check and install node and pm2 if not installed
-          if ! command -v node &> /dev/null; then
-            curl -sL https://deb.nodesource.com/setup_20.x | bash -
-            apt-get install -y nodejs
-          fi
-          if ! command -v pm2 &> /dev/null; then
-            npm install pm2 -g
-          fi
-          # Stop PM2 processes
-          pm2 stop all
-          # Navigate to your application directory
-          cd /home/ubuntu/estate-strapi || exit
-          # Pull the latest code from main branch
-          git pull origin main
-          # Install dependencies
-          npm install
-          # Build the application
-          npm run build
-          # Start the application with PM2
-          pm2 start server.js
-          EOF
+          scp -i ~/.ssh/private.key -o StrictHostKeyChecking=no -r ./path/to/your/build/dir root@77.37.124.127:/home/ubuntu/estate-strapi
         shell: bash
