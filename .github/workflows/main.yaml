@@ -1,79 +1,38 @@
-name: Estate Deployment v.02
+name: Deploy Strapi to VPS
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main # Ana branch'inizi belirtin
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20.x]
 
     steps:
-      - name: Checkout 🛎
+      - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: main
 
       - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh/
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/private.key
-          chmod 600 ~/.ssh/private.key
-          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
-        shell: bash
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
-
-      - name: Install dependencies 👨🏻‍💻
-        run: npm install
-
-      - name: Create .dotenv file
-        uses: iamsauravsharma/create-dotenv@v2.0.1
+        uses: webfactory/ssh-agent@v0.5.3
         with:
-          input-prefix: ""
-          file-path: ".env"
-          output-prefix: ""
-        env:
-          ADMIN_JWT_SECRET: ${{ secrets.ADMIN_JWT_SECRET }}
-          API_TOKEN_SALT: ${{ secrets.API_TOKEN_SALT }}
-          APP_KEYS: ${{ secrets.APP_KEYS }}
-          HOST: ${{ secrets.HOST }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          PORT: ${{ secrets.PORT }}
-          TRANSFER_TOKEN_SALT: ${{ secrets.TRANSFER_TOKEN_SALT }}
-          DATABASE_CLIENT: ${{ secrets.DATABASE_CLIENT }}
-          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-          DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
-          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-          DATABASE_SSL: ${{ secrets.DATABASE_SSL }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Build Strapi app for production
-        run: npm run build
-
-      - name: Archive build files
-        run: tar -czf build.tar.gz ./build
-
-      - name: Test SSH connection
-        run: ssh -i ~/.ssh/private.key -o StrictHostKeyChecking=no root@77.37.124.127 "echo 'SSH connection established'"
-        shell: bash
-
-      - name: Copy build files to server
+      - name: Deploy to VPS
         run: |
-          scp -i ${{ secrets.SSH_PRIVATE_KEY }} -o StrictHostKeyChecking=no build.tar.gz root@77.37.124.127:/home/ubuntu/estate-strapi
-
-      - name: Deploy build on server
-        run: |
-          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} -o StrictHostKeyChecking=no root@77.37.124.127 << 'EOF'
-            cd /home/ubuntu/estate-strapi
-            tar -xzf build.tar.gz
-            pm2 stop all || true
-            pm2 start server.js
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+            # Uygulamanın deploy edileceği dizine git
+            cd ${{ secrets.VPS_DEPLOY_PATH }}
+            
+            # Gerekli dosyaları kopyala
+            git pull origin main
+            
+            # Gerekli bağımlılıkları yükle
+            npm install
+            
+            # Strapi build işlemi (yeni ise, ilk kurulumu yap)
+            npm run build
+            
+            # Strapi servisini yeniden başlat
+            pm2 restart strapi || pm2 start npm --name "strapi" -- start
           EOF
-        shell: bash
