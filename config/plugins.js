@@ -3,7 +3,7 @@ module.exports = ({ env }) => ({
     config: {
       providerOptions: {
         localServer: {
-          maxage: 300000,
+          maxage: 3000000,
         },
       },
     },
