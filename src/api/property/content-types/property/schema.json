@@ -1,0 +1,115 @@
+{
+  "kind": "collectionType",
+  "collectionName": "properties",
+  "info": {
+    "singularName": "property",
+    "pluralName": "properties",
+    "displayName": "Property",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "propertyImage": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "propertyName": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "price": {
+      "type": "biginteger"
+    },
+    "addedOn": {
+      "type": "date"
+    },
+    "propertyType": {
+      "type": "enumeration",
+      "enum": [
+        "Flat",
+        "Detached",
+        "Semi-Detached",
+        "Terraced",
+        "End of Terrace",
+        "Cottage",
+        "Bungalows",
+        "Farmhouse",
+        "Townhouse",
+        "Mansions",
+        "Office",
+        "Retail",
+        "Industrial",
+        "Hotel",
+        "Garage"
+      ]
+    },
+    "constructionYear": {
+      "type": "integer"
+    },
+    "heatingType": {
+      "type": "enumeration",
+      "enum": [
+        "Central Heat",
+        "Boiler",
+        "Furnace",
+        "Heat Pump",
+        "Electric",
+        "Fireplace - Gas",
+        "Fireplace - Wood",
+        "Fireplace - Electric"
+      ]
+    },
+    "numberOfBedroom": {
+      "type": "integer"
+    },
+    "numberOfBathroom": {
+      "type": "integer"
+    },
+    "numberOfGarage": {
+      "type": "integer"
+    },
+    "keyFeatures": {
+      "type": "text"
+    },
+    "projectDescription": {
+      "type": "text"
+    },
+    "groundFloorDetails": {
+      "type": "text"
+    },
+    "firstFloorDetails": {
+      "type": "text"
+    },
+    "secondFloorDetails": {
+      "type": "text"
+    },
+    "thirdFloorDetails": {
+      "type": "text"
+    },
+    "keywords": {
+      "type": "string"
+    },
+    "mainImage": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

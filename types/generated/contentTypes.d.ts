@@ -844,6 +844,87 @@ export interface ApiLogoLogo extends Schema.CollectionType {
   };
 }
 
+export interface ApiPropertyProperty extends Schema.CollectionType {
+  collectionName: 'properties';
+  info: {
+    singularName: 'property';
+    pluralName: 'properties';
+    displayName: 'Property';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    propertyImage: Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    propertyName: Attribute.String;
+    address: Attribute.String;
+    price: Attribute.BigInteger;
+    addedOn: Attribute.Date;
+    propertyType: Attribute.Enumeration<
+      [
+        'Flat',
+        'Detached',
+        'Semi-Detached',
+        'Terraced',
+        'End of Terrace',
+        'Cottage',
+        'Bungalows',
+        'Farmhouse',
+        'Townhouse',
+        'Mansions',
+        'Office',
+        'Retail',
+        'Industrial',
+        'Hotel',
+        'Garage'
+      ]
+    >;
+    constructionYear: Attribute.Integer;
+    heatingType: Attribute.Enumeration<
+      [
+        'Central Heat',
+        'Boiler',
+        'Furnace',
+        'Heat Pump',
+        'Electric',
+        'Fireplace - Gas',
+        'Fireplace - Wood',
+        'Fireplace - Electric'
+      ]
+    >;
+    numberOfBedroom: Attribute.Integer;
+    numberOfBathroom: Attribute.Integer;
+    numberOfGarage: Attribute.Integer;
+    keyFeatures: Attribute.Text;
+    projectDescription: Attribute.Text;
+    groundFloorDetails: Attribute.Text;
+    firstFloorDetails: Attribute.Text;
+    secondFloorDetails: Attribute.Text;
+    thirdFloorDetails: Attribute.Text;
+    keywords: Attribute.String;
+    mainImage: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::property.property',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::property.property',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiServiceService extends Schema.CollectionType {
   collectionName: 'services';
   info: {
@@ -933,6 +1014,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::banner.banner': ApiBannerBanner;
       'api::logo.logo': ApiLogoLogo;
+      'api::property.property': ApiPropertyProperty;
       'api::service.service': ApiServiceService;
       'api::slider.slider': ApiSliderSlider;
     }
