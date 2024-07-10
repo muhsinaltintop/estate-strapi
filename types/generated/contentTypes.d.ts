@@ -907,6 +907,9 @@ export interface ApiPropertyProperty extends Schema.CollectionType {
     thirdFloorDetails: Attribute.Text;
     keywords: Attribute.String;
     mainImage: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    city: Attribute.String;
+    isItReady: Attribute.Boolean;
+    willBeReadyOn: Attribute.Date;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
