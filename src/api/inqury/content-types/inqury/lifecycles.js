@@ -16,7 +16,7 @@ module.exports = {
               <p><strong>Name:</strong> ${result.name}</p>
               <p><strong>Email:</strong> ${result.email}</p>
               <p><strong>Phone:</strong> ${result.phoneNumber}</p>
-              <p><strong>Message:</strong> ${result.message}</p>,
+              <p><strong>Message:</strong> ${result.message}</p>`,
             });
           } catch (err) {
         console.log(err);
