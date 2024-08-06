@@ -911,6 +911,46 @@ export interface ApiBlogBlog extends Schema.CollectionType {
   };
 }
 
+export interface ApiInquryInqury extends Schema.CollectionType {
+  collectionName: 'inquries';
+  info: {
+    singularName: 'inqury';
+    pluralName: 'inquries';
+    displayName: 'Inqury';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    phoneNumber: Attribute.String &
+      Attribute.Required &
+      Attribute.CustomField<
+        'plugin::strapi-phone-validator.phone',
+        {
+          country: 'gb';
+        }
+      >;
+    email: Attribute.Email & Attribute.Required;
+    message: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::inqury.inqury',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::inqury.inqury',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiLogoLogo extends Schema.CollectionType {
   collectionName: 'logos';
   info: {
@@ -1159,6 +1199,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::banner.banner': ApiBannerBanner;
       'api::blog.blog': ApiBlogBlog;
+      'api::inqury.inqury': ApiInquryInqury;
       'api::logo.logo': ApiLogoLogo;
       'api::menu.menu': ApiMenuMenu;
       'api::property.property': ApiPropertyProperty;
